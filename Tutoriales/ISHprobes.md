@@ -38,7 +38,7 @@ echo $PATH
 export PATH=/cm/shared/apps/UCSC-executables/12may2022/blat:$PATH
 ```
 
-You have now created a file, say candidate_primers.tsv that has three columns, separated by TAB. The sequences are invented, and the primer Ids are arbitrary:
+You have now created a file, say candidate_primers.tsv that has three columns, separated by TAB: the first is the primer pair id, the . The sequences are invented, and the primer Ids are arbitrary:
 ```csv
 PrimerPair1  ATGCGGAGAGGATG GTGTGCTGGCGG
 ParimerPair2  GTAGCCCGTGCAC  CTGTGAGTTCTCT
@@ -59,6 +59,17 @@ export pcrfa=$(pwd)/pcr_predicted.fasta
 echo $pcrfa
 ```
 
-
+Now we will move to the folder 27-Transcriptome_Blast/
+Once you have navigated there, load the module blast+
+```bash
+module load blast+/2.7.1
+blastn -query $pcrfa -db Dlaevis_BlastDB -out resultados.out -evalue 1e06
+less resultados.out
+```
+Ignore the warnings from FASTA-Reader, it is just warning you that the primer sequences are mentioned in the fasta identifiers.
+Check your results, you should only see alignments to your intended targets or closely related sequences (isoforms) in the Plus/Plus orientation.
+If not, then your probe will probably have unspecific binding, therefore, discard the specific pair of primers that made that hit
 
 Pick at least two pairs of primers and order them. This will save you headaches if a particular pair does not amplify.
+Good luck with your experiments.
+
