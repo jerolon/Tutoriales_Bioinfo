@@ -73,5 +73,5 @@ If not, then your probe will probably have unspecific binding, therefore, discar
 Pick at least two pairs of primers and order them. This will save you headaches if a particular pair does not amplify.
 Good luck with your experiments.
 
-To come: (how to check for sequence and Antisense orientation)[Tutoriales/checarOri.md] when you get back the Sanger sequences from your primers
+To come: [how to check for sequence and Antisense orientation](Tutoriales/checarOri.md) when you get back the Sanger sequences from your primers
 
