@@ -38,3 +38,27 @@ echo $PATH
 export PATH=/cm/shared/apps/UCSC-executables/12may2022/blat:$PATH
 ```
 
+You have now created a file, say candidate_primers.tsv that has three columns, separated by TAB. The sequences are invented, and the primer Ids are arbitrary:
+```csv
+PrimerPair1  ATGCGGAGAGGATG GTGTGCTGGCGG
+ParimerPair2  GTAGCCCGTGCAC  CTGTGAGTTCTCT
+```
+Run your primers against the transcriptome. A fasta file with predicted PCR products will appear for all your primers
+```bash
+isPcr StrandedTrinityAss_95.fasta candidate_primers.tsv pcr_predicted.fasta -out=fa
+```
+
+Check the pcr_predicted.fasta file. It should have the PCR products that you expect. If it has something else, discard that pair of primers.
+
+
+## Check the PROBE sequence for specificity against the transcriptome
+Now we will use the expected PCR sequence to check that our probes will hit only the specific mRNA sequence(s) that we are interested in.
+We will keep the absolute path to the output file in the $pcrfa variable like so:
+```
+export pcrfa=$(pwd)/pcr_predicted.fasta
+echo $pcrfa
+```
+
+
+
+Pick at least two pairs of primers and order them. This will save you headaches if a particular pair does not amplify.
