@@ -63,7 +63,7 @@ Now we will move to the folder 27-Transcriptome_Blast/
 Once you have navigated there, load the module blast+
 ```bash
 module load blast+/2.7.1
-blastn -query $pcrfa -db Dlaevis_BlastDB -out resultados.out -evalue 1e06
+blastn -query $pcrfa -db Dlaevis_BlastDB/Dlaevis_RNA -out resultados.out -evalue 1e06
 less resultados.out
 ```
 Ignore the warnings from FASTA-Reader, it is just warning you that the primer sequences are mentioned in the fasta identifiers.
