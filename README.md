@@ -6,3 +6,5 @@ How to design probes for traditional In situ Hybridization
 
 # Spatial Transcriptomics
    [Scripts for the class on spring 2024 on Transcriptomics](Scripts_Seurat/Seurat_Spatial_Scripts.md)
+
+[Semana de la bioinformatica 2024](Tutoriales/RNA-seq_semana_bioinformatica.html)
