@@ -3,10 +3,8 @@ Jeronimo Miranda Rodriguez
 
 ## Cargando librerias
 
-Este tutorial esta basado en el libro Akalin (2020) que esta disponible
-en [Computational Biology with R](https://compgenomr.github.io/book/).
-Este libro es un muy buen recurso para profundizar en sus conocimientos
-de R y su uso para la genomica en ambitos que no veremos en el curso.
+Cargamos varias librerias del tidyverse para hacernos mas facil la vida
+con los dataframes
 
 ``` r
 library(readr)
@@ -26,7 +24,7 @@ library(ggfortify)
 #### Cargar los datos directo del output de kallisto con tximport
 
 En el archivo `all_samples.txt` esta la informacion de los nombres de
-cada muestra y a cual grupo experimental pertenecen
+cada muestra y a cual grupo experimental pertenecen.
 
 ``` r
 colData <- read_delim("rna-seq/all_samples.txt", 
@@ -92,10 +90,10 @@ transcritos, que nos sirve para normalizar como TPM y RPKM.
 
 El paquete de analisis de expresion diferencial DESeq2 trabaja mejor con
 datos a nivel gen, pero los programas como kallisto, salmon y otros
-cuantifican a nivel transcrito. En cualquier caso, es buena idea
-importar los datos a traves de **tximport** En este link hay mas
-informacion sobre como cargar los datos desde diferentes programas de
-cuantificacion y como utilizarlos con DESeq2, edgeR o limma-voom
+cuantifican a nivel transcrito. Por eso, es buena idea importar los
+datos a traves de **tximport** En este link hay mas informacion sobre
+como cargar los datos desde diferentes programas de cuantificacion y
+como utilizarlos con DESeq2, edgeR o limma-voom
 
 [tximport](https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html)
 
@@ -132,11 +130,11 @@ unidades de kilobases. Esta normalizacion tambien corrige que los genes
 mas largos daran mas conteos.
 
 $$
-FPKM = \frac{\frac{conteo_{gen^i}}{total}*10^{6}}{\frac{largo_{gen^i}}{1000}}= \frac{10^9 *  conteo_{gen^i}}{total*largo_{gen^i}}
+FPKM = \frac{\frac{conteo_{gen^i}}{total}*10^{6}}{\frac{largo_{gen^i}}{1000}} = \frac{10^9 * conteo_{gen^i}}{total*largo_{gen^i}}
 $$
 
 ``` r
-#Computar RPKM
+#Computar FPKM
 #Vector de longitudes
 rpkm <-  apply(counts$counts, MARGIN = 2, FUN = function(x){
   10^9 * x / sum(as.numeric(x)) / counts$length  
@@ -202,7 +200,7 @@ tpm[selectedGenes,] %>% pheatmap(scale = "row", show_rownames = F,
 
 En este analisis preeliminar de los datos, es obvio que cuatro controles
 se agrupan, asi como cuatro muestras experimentales. Sin embargo,
-dc_rep4 e ir_rep7 se apartan de las demas. Esto puede deberse a
+**dc_rep4** e **ir_rep7** se apartan de las demas. Esto puede deberse a
 variabilidad inherente a cada muestra durante el proceso experimental,
 la secuenciacion u otros factores. Aunque hay maneras de corregir esta
 varianza inesperada, para este ejercicio, simplemente eliminaremos estas
@@ -210,9 +208,10 @@ dos muestras.
 
 #### Analisis de componentes principales
 
-Aqui tambien es obvio que ambas muestras son *outliers* sobre el
-componente principal 1, que explica el 60% de la varianza. Este es un
-buen argumento para excluirlas de los siguientes analisis.
+Las siguiente graficas de componentes principales nos confirma que ambas
+muestras son *outliers* sobre el componente principal 1, que explica el
+60% de la varianza. Este es un buen argumento para excluirlas de los
+siguientes analisis.
 
 ``` r
 M <- t(tpm)
@@ -282,6 +281,131 @@ variacion, en este caso, el grupo.
 
 ``` r
 library(DESeq2)
+```
+
+    Lade nötiges Paket: S4Vectors
+
+    Lade nötiges Paket: stats4
+
+    Lade nötiges Paket: BiocGenerics
+
+
+    Attache Paket: 'BiocGenerics'
+
+    Die folgenden Objekte sind maskiert von 'package:dplyr':
+
+        combine, intersect, setdiff, union
+
+    Die folgenden Objekte sind maskiert von 'package:stats':
+
+        IQR, mad, sd, var, xtabs
+
+    Die folgenden Objekte sind maskiert von 'package:base':
+
+        anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+        colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+        get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+        match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+        Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,
+        tapply, union, unique, unsplit, which.max, which.min
+
+
+    Attache Paket: 'S4Vectors'
+
+    Das folgende Objekt ist maskiert 'package:tidyr':
+
+        expand
+
+    Die folgenden Objekte sind maskiert von 'package:dplyr':
+
+        first, rename
+
+    Das folgende Objekt ist maskiert 'package:utils':
+
+        findMatches
+
+    Die folgenden Objekte sind maskiert von 'package:base':
+
+        expand.grid, I, unname
+
+    Lade nötiges Paket: IRanges
+
+
+    Attache Paket: 'IRanges'
+
+    Die folgenden Objekte sind maskiert von 'package:dplyr':
+
+        collapse, desc, slice
+
+    Das folgende Objekt ist maskiert 'package:grDevices':
+
+        windows
+
+    Lade nötiges Paket: GenomicRanges
+
+    Lade nötiges Paket: GenomeInfoDb
+
+
+    Attache Paket: 'GenomicRanges'
+
+    Das folgende Objekt ist maskiert 'package:magrittr':
+
+        subtract
+
+    Lade nötiges Paket: SummarizedExperiment
+
+    Lade nötiges Paket: MatrixGenerics
+
+    Lade nötiges Paket: matrixStats
+
+
+    Attache Paket: 'matrixStats'
+
+    Das folgende Objekt ist maskiert 'package:dplyr':
+
+        count
+
+
+    Attache Paket: 'MatrixGenerics'
+
+    Die folgenden Objekte sind maskiert von 'package:matrixStats':
+
+        colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+        colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+        colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+        colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+        colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+        colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+        colWeightedMeans, colWeightedMedians, colWeightedSds,
+        colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+        rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+        rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+        rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+        rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+        rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+        rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+        rowWeightedSds, rowWeightedVars
+
+    Lade nötiges Paket: Biobase
+
+    Welcome to Bioconductor
+
+        Vignettes contain introductory material; view with
+        'browseVignettes()'. To cite Bioconductor, see
+        'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+    Attache Paket: 'Biobase'
+
+    Das folgende Objekt ist maskiert 'package:MatrixGenerics':
+
+        rowMedians
+
+    Die folgenden Objekte sind maskiert von 'package:matrixStats':
+
+        anyMissing, rowMedians
+
+``` r
 #Formula
 designFormula <- "~group"
 #Convertirmatriz a un objeto DESeq
@@ -290,10 +414,12 @@ dds <- DESeqDataSetFromTximport(txi = counts,
                               design = as.formula(designFormula))
 ```
 
+    using counts and average transcript lengths from tximport
+
 Aunque tambien podemos obtener un objeto a partir de una matriz o un
-objeto `SummarizedExperiment`, como nos avisa el mensaje, al importar
-con tximport, DESeq2 automaticamente tomara en cuenta la informacion del
-largo de los transcritos.
+objeto `SummarizedExperiment`, al importar con tximport, DESeq2
+automaticamente tomara en cuenta la informacion del largo de los
+transcritos.
 
 ### Filtrado preeliminar
 
@@ -360,7 +486,9 @@ Como puedes ver, la funcion `DESeq` lleva a cabo al menos 3 pasos:
     discreta [^3]
 
 Podemos obtener la informacion de estos tests estadisticos con la
-funcion `results` aplicada al objetdo `dds`
+funcion `results` aplicada al objetdo `dds` . Contrast es un vector en
+el que viene “group”, el nombre de la columna donde se especifica el
+tratamiento, “ir” el tratamiento experimental, “dc” el control.
 
 ``` r
 DEresults = results(dds, contrast = c("group", "ir", "dc"))
@@ -448,7 +576,7 @@ ggplot(as.data.frame(DEresults), aes(x=pvalue)) + geom_histogram(bins = 100)
 ![](RNA-seq_semana_bioinformatica_files/figure-commonmark/pvaldistr-1.png)
 
 ``` r
-#Coonvertimos a dataframe y quitamos los genes que tienen na en padjusted
+#Convertimos a dataframe y quitamos los genes que tienen na en padjusted
 volcano_df <- as.data.frame(resLFC) %>% filter(!is.na(padj)) %>% 
   #Hacemos una variable y por simplicidad y una variable que agrupe significancia estadistica
   mutate(y = -log10(padj), significance = ifelse(padj < 0.1, "Significant", "Non-Significant"))
@@ -466,9 +594,10 @@ p + annotate("text", x = highlighted_genes$log2FoldChange, y = highlighted_genes
 ## Normalizaciones de los conteos
 
 Aunque DESeq2 trabaja con los conteos crudos y usa su propia
-normalizacion interna, para visualizaciones o procedimientos que
-requieren datos normalizados, se ofrecen dos algoritmos de normalizacion
-alternativos al mas frecuentemente usado que es el log2
+normalizacion interna, esto no es lo optimo para visualizacion o pca.
+Para graficas o procedimientos que requieren datos normalizados, se
+ofrecen dos algoritmos de normalizacion alternativos al mas
+frecuentemente usado que es el log2
 
 ``` r
 vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
@@ -489,8 +618,12 @@ ggplot(df, aes(x = x, y = y)) + geom_hex(bins = 80) +
 
 ![](RNA-seq_semana_bioinformatica_files/figure-commonmark/threenorm-1.png)
 
-Tambien podemos comparar como cambia la grafica de PCA con las
-diferentes transformaciones
+Aqui estamos comparando los conteos de genes entre la muestra 1 y la 2.
+Las desviaciones de la diagonal son las diferencias entre las muestras.
+Notan algun patron?
+
+Tambien podemos comparar como como impactan al PCA las diferentes
+transformaciones
 
 ``` r
 DESeq2::plotPCA(normTransform(dds), intgroup = "group") + ggtitle("Normalizaacion log2 +1")
@@ -667,11 +800,11 @@ bg_go <- swissprot_trinotate %>%
   pull(gene_ontology_go) %>% str_extract("GO:\\d+") %>%  unlist
 ```
 
-Gprofiler requiere un organismo, utilizamos a bglabrata pues tambien es
-un gasteropodo y si se encuentra en su base de datos. Luego, filtramos
-con un un *intersection size* relativamente pequeno para quedarnos con
-los GO mas especificos y no con los generales como “Citoplasma” o
-“membrana plasmatica”.
+Gprofiler requiere un organismo, utilizamos a *Biomphalaria glabrata*
+pues tambien es un gasteropodo y si se encuentra en su base de datos.
+Luego, filtramos con un un *intersection size* relativamente pequeno
+para quedarnos con los GO mas especificos y no con los generales como
+“Citoplasma” o “membrana plasmatica”.
 
 ``` r
 library(gprofiler2)
@@ -699,9 +832,22 @@ publish_gosttable(goResults, highlight_terms = go[1:5,],
 
 ![](RNA-seq_semana_bioinformatica_files/figure-commonmark/gotable-1.png)
 
-Con la libreria gage, tomamos facilmente un grupo de genes y comparar su
-cambio en expresion con con otro grupo. Aqui, tomamos el ultimo de los
-GO terms y lo comparamos con un
+Este procedimiento es mucho mas sencillo para organismos mas
+establecidos, solo requiere la lista de genes. Asimismo, alternativas en
+linea para este analisis son
+[Ghostkoala](https://www.kegg.jp/ghostkoala/) y
+[KAAS](https://www.genome.jp/kegg/kaas/) en los que se puede subir la
+secuencia para hacer la anotacion y asociacion con GO y KEGG.
+
+## GSEA gene set enrichment analysis
+
+Con la libreria gage, podemos tomar un conjunto de genes y comparar su
+cambio en expresion en lugar de hacerlo solo con genes aislados. Aqui,
+tomamos el ultimo de los GO terms seleccionados como enriquecidos. Como
+comparacion, tomamos un set al azar del mismo tamano. Este codigo esta
+metido en un loop, por lo que si quieres comparar todos los GO sets
+enriquecidos automaticamente, solo tienes que cambiar
+`for(i in nrow(go):nrow(go)-1)` por `for(i in nrow(go):1)`
 
 ``` r
 library(gage)
@@ -743,18 +889,18 @@ print(gseaResults)
     [1] 83
     $greater
                 p.geomean  stat.mean     p.val     q.val set.size      exp1
-    top_GO_term 0.2307048 0.73874668 0.2307048 0.4614096       66 0.2307048
-    random_set  0.4845530 0.03880476 0.4845530 0.4845530       66 0.4845530
+    top_GO_term 0.2307048  0.7387467 0.2307048 0.4614096       66 0.2307048
+    random_set  0.7696568 -0.7399194 0.7696568 0.7696568       66 0.7696568
 
     $less
                 p.geomean  stat.mean     p.val     q.val set.size      exp1
-    random_set  0.5154470 0.03880476 0.5154470 0.7692952       66 0.5154470
-    top_GO_term 0.7692952 0.73874668 0.7692952 0.7692952       66 0.7692952
+    random_set  0.2303432 -0.7399194 0.2303432 0.4606863       66 0.2303432
+    top_GO_term 0.7692952  0.7387467 0.7692952 0.7692952       66 0.7692952
 
     $stats
                  stat.mean       exp1
-    top_GO_term 0.73874668 0.73874668
-    random_set  0.03880476 0.03880476
+    top_GO_term  0.7387467  0.7387467
+    random_set  -0.7399194 -0.7399194
 
 ## Diferentes normalizaciones
 
@@ -786,7 +932,55 @@ log2(counts$counts+1)%>% meanSdPlot(ranks = F)
 
 Aunque DESeq2 opera sobre conteos crudos modelados por distribuciones
 discretas, para visualiciones como PCA, se requieren datos normalizados
-y con varianzas los mas parecidas posible.
+y con varianzas los mas parecidas posible. Aqui, vemos una grafica RLE
+de relative log expression. Le expresion de cada gen se divide entre el
+valor de la mediana de ese gen en todas las muestras y se saca el
+logaritmo. Idealmente, la normalizacion hace que las cajas se centren en
+cero y que tengan poca varianza. Se cumple esto con los conteos y
+conteos normalizados?
+
+``` r
+library(EDASeq)
+par(mfrow = c(1,2))
+plotRLE(DESeq2::counts(dds), outline = F, ylim = c(-2,2),
+        col=as.integer(colData$group),
+        main = "Raw counts")
+
+plotRLE(DESeq2::counts(dds, normalized = T), outline = F, ylim = c(-2,2),
+        col=as.numeric(colData$group),
+        main = "Normalized counts")
+```
+
+![](RNA-seq_semana_bioinformatica_files/figure-commonmark/rleCounts-1.png)
+
+La normalizacion si ayuda a centrar los datos, pero la varianza de cada
+muestra sigue siendo muy distinta entre muestras. Los siguientes
+boxplots muestran algo similar a lo que habiamos visto mas arriba, la
+transformacion estabilizadora de varianza y el logaritmo regularizados
+son algoritmos de normalizacion mas adecuados para ayudar a comparar y
+visualizar las diferencias entre librerias.
+
+``` r
+par(mfrow = c(1,3))
+plotRLE(DESeq2::counts(dds, normalized = T), outline = F, ylim = c(-2,2),
+        col=as.numeric(colData$group),
+        main = "Normalized counts")
+
+plotRLE(assay(vsd), outline = F, ylim = c(-2,2),
+        col=as.numeric(colData$group),
+        main = "Variance stabilizing transformation")
+
+plotRLE(assay(rld), outline = F, ylim = c(-2,2),
+        col=as.numeric(colData$group),
+        main = "Regularized log")
+```
+
+![](RNA-seq_semana_bioinformatica_files/figure-commonmark/varianceRLE-1.png)
+
+Este tutorial esta basado en el libro Akalin (2020) que esta disponible
+en [Computational Biology with R](https://compgenomr.github.io/book/).
+Este libro es un muy buen recurso para profundizar en sus conocimientos
+de R y su uso para la genomica en ambitos que no veremos en el curso.
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
