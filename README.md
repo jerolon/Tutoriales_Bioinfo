@@ -1,13 +1,13 @@
 # Tutoriales_Bioinfo
 Common Bioinfo Procedures in LabA03 at INB UNAM
 
-How to design probes for traditional In situ Hybridization
+- How to design probes for traditional In situ Hybridization
 [Go to tutorial](Tutoriales/ISHprobes.md)
-\\
-Some bash tricks
+
+- Some bash tricks
 [Semana de la bioinformatica 2024](https://jerolon.github.io/Tutoriales/bash_training.html)
-\\
-How to analyze your RNA-seq data quantification with DESeq2
+
+- How to analyze your RNA-seq data quantification with DESeq2
 [Semana de la bioinformatica 2024](https://jerolon.github.io/Tutoriales/RNA-seq_semana_bioinformatica.html)
 
 # Spatial Transcriptomics
