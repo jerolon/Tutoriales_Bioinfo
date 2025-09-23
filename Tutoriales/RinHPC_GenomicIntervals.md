@@ -17,7 +17,11 @@ module load r/4.4.1
 Si usas R a menudo o lo usarás mucho aunque sea por un periodo corto, esto da mucha pereza. Por ello, añadiremos el comando anterior a nuestro archivo .bashrc. Este es un script oculto que se ejecuta en cada login para configurar ciertos valores del bash.
 
 El archivo se encuentra en la "casa" de cada quien `/home/usuario`. Para ir allí, si no estás ya, escribe `cd ~` o simplemente `cd`. Una vez en nuestra casa, muestra los archivos oculos con `ls -a` (-a de all).
-Aparecerán algunos archivos que comienzan con un punto como `.Xauthority, .bash_history, .bashrc`.
+Aparecerán algunos archivos que comienzan con un punto como `.Xauthority, .bash_history, .bashrc`. 
+
+Utiliza vi para editar el archivo .bashrc: `vi .bashrc`. Utiliza las flechas de arriba y abajo del teclado para ir al final del archivo. Ahora, presiona la letra <kbd>i</kbd> en el teclado para entrar al modo **insertar** que es donde se puede editar, en la parte de abajo de tu pantalla debe aparecer la leyenda "-- INSERT --".
+
+Ahora, simplemente presiona <kbd>Enter</kbd> para ir a la última línea del archivo y escribe o copia el comando `module load r/4.4.1`. Para salvar y salir, hay que presionar la tecla <kbd>Esc</kbd> que nos saca del modo de inserción de texto (la leyenda de INSERT desaparecerá). Acto seguido, escribe <kbd>:</kbd> luego <kbd>w</kbd> luego <kbd>q</kbd> y luego <kbd>Enter</kbd>. Mientras hagas esto, irán apareciendo los caracteres :wq indicando que escribitermos el archivo (write) y saldremos del editor (quit). Al presionar <kbd>Enter<\kbd>, saldremos del editor vi y volveremos a la terminal de linux.
 
 Cargamos varias librerias del tidyverse para hacernos mas facil la vida
 con los dataframes
