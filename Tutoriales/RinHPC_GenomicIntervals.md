@@ -119,6 +119,7 @@ freqNuc <- letterFrequency(seqs_promotores_500bp, c("A", "T", "C", "G")) %>% as.
 freqNuc$GC <- dinucleotideFrequency(seqs_promotores_500bp)[,"CG"]
 freqNuc$Total <- width(promotores_500bp)
 
+CpG_islands <- mutate(freqNuc, obs_exp = Total*GC/(C*G))
 
 library(ggplot2)
 wilcox.test(CpG_islands$obs_exp, alternative = "greater", mu = 0.55)
