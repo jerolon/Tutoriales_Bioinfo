@@ -14,6 +14,7 @@ Te mostrará todos los módulos disponibles en el clúster, incluyendo múltiple
 module load r/4.4.1
 export R_LIBS=/mnt/data/alfredvar/username/my-R-packages:/opt/apps/r/4.4.1-studio/lib64/R/library
 ```
+Aquí, `/mnt/data/alfredvar/username/my-R-packages` es una carpeta creada en tu directorio de data para poder instalar librerias. El directorio de instalación de R por default (/opt/apps...) no permite escribir sin permisos de administrador.
 
 Si usas R a menudo o lo usarás mucho aunque sea por un periodo corto, esto da mucha pereza. Por ello, añadiremos el comando anterior a nuestro archivo .bashrc. Este es un script oculto que se ejecuta en cada login para configurar ciertos valores del bash.
 
@@ -24,10 +25,10 @@ Utiliza vi para editar el archivo .bashrc: `vi .bashrc`. Utiliza las flechas de 
 
 Ahora, simplemente presiona <kbd>Enter</kbd> para ir a la última línea del archivo y escribe o copia el comando `module load r/4.4.1`. A continuacion, copia la línea que contiene `export R_LIBS`. Para salvar y salir, hay que presionar la tecla <kbd>Esc</kbd> que nos saca del modo de inserción de texto (la leyenda de INSERT desaparecerá). Acto seguido, escribe <kbd>:</kbd> luego <kbd>w</kbd> luego <kbd>q</kbd> y luego <kbd>Enter</kbd>. Mientras hagas esto, irán apareciendo los caracteres :wq indicando que escribiremos el archivo (write) y saldremos del editor (quit). Al presionar <kbd>Enter</kbd>, saldremos del editor vi y volveremos a la terminal de linux.
 
-Listo, ahora, entremos a la partición interactiva como nos indica Luis: 
+Listo, ahora, entremos a la partición interactiva indicándole que mantenga los parámetros gráficos para que R pueda mostrar las ventanas: 
 
 ``` bash
-srun -p interactive --pty bash
+srun -p interactive --pty --x11=first --export=ALL bash
 ```
 El prompt de tu terminal debe cambiar de algo como `[username@login01 ~]` a `[username@node12 ~]` indicando que hemos pasado al nodo de cómputo 12 que debe tener recursos suficientes de RAM y procesamiento para utilizar R con datasets grandes.
 
